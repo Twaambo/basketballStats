@@ -1,0 +1,13 @@
+body {
+  min-height: 2000px;
+  padding-top: 70px;
+}
+
+.jumbo-small {
+  padding: 0 10px 0 10px;
+}
+
+.custom-table {
+  background: white;
+  margin-top: 10px;
+}
