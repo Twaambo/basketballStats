@@ -3,6 +3,7 @@ ini_set('display_errors', 'On');
 
 if(isset($_POST['submit'])){
   $count = 0;
+  $totalTime = 0;
   $e = 0;
   $info = array();
   
@@ -14,6 +15,7 @@ if(isset($_POST['submit'])){
       $info["fname$count"] = $_POST["fname$i"];
       $info["lname$count"] = $_POST["lname$i"];
       $info["time$count"] = $_POST["time$i"];
+      $totalTime += $_POST["time$i"];
       $count++;
     }
     elseif(empty($_POST["fname$i"]) && empty($_POST["lname$i"]) && empty($_POST["time$i"]))
@@ -23,14 +25,32 @@ if(isset($_POST['submit'])){
     elseif(empty($_POST["fname$i"]) || empty($_POST["lname$i"]) || empty($_POST["time$i"]))
     {
       $num = $i + 1;
-      $errors[$e] = "Player $num is missing information, please fill out all the input fields.";
+      $errorOutput = "Player $num is missing information:";
+      
+      if(empty($_POST["fname$i"]))
+        $errorOutput += "First Name ";
+      if(empty($_POST["lname$i"]))
+        $errorOutput += "Last Name ";
+      if(empty($_POST["time$i"]))
+        $errorOutput += "Player Time ";
+        
+      $errors[$e] = $errorOutput;
       $e++;
     }
   }
-
+  
+  //Check if time exceed 200 Minutes
+  if($totalTime > 200)
+  {
+      $errors[$e] = "Total Time is $totalTime, total time cannot exceed 200 minutes";
+      $e++;
+  }
 
   if(empty($errors) && ($count > 0))
   {
+    //Calculate average time played
+    $averageTime = $totalTime/$count;
+    
   	session_start();
   	$_SESSION["count"] = $count;
     $_SESSION["dataDump"] = $info;
@@ -95,21 +115,23 @@ if(isset($_POST['submit'])){
     </nav>
 
     <div class="container">
-      <h2>Basketball Entry Form</h2>
+      <div class="col-md-6 col-md-offset-3">
+      <h2 class="mainHeader">Basketball Entry Form</h2>
+      </div>
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron jumbo-small">
+      <div class="jumbo-small">
         <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-          <div class='col-md-12'>
           <?php
             if(isset($errors))
             {
+              echo "<div class='col-md-9 alert alert-danger'>";
               foreach($errors as $error)
               {
                 echo "<small>$error</small><br />";
               }
+              echo "</div>";
             }
           ?>
-          </div>
           <?php
           for($i = 0; $i < 12; $i++)
           {
@@ -122,7 +144,7 @@ if(isset($_POST['submit'])){
             </div>";
           }
           ?>
-            <button type="submit" class="btn btn-primary" name="submit">Login</button>
+            <button type="submit" class="btn btn-primary " name="submit">Submit</button>
         </form>
       </div>
     </div> <!-- /container -->

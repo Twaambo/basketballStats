@@ -4,10 +4,17 @@ body {
 }
 
 .jumbo-small {
-  padding: 0 10px 0 10px;
+  padding-left: 15%;
+  padding-top: 20px;
+  background: #E8E8E8;
+  border-radius: 25px;
 }
 
 .custom-table {
-  background: white;
   margin-top: 10px;
+  background: #DDDDDD;
+}
+
+.mainHeader {
+    text-align: center;
 }
