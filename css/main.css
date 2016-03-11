@@ -12,9 +12,14 @@ body {
 
 .custom-table {
   margin-top: 10px;
-  background: #DDDDDD;
+  background: #FFFFFF;
 }
 
 .mainHeader {
     text-align: center;
+}
+
+.description {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 ini_set('display_errors', 'On');
 session_start();
 	if(isset($_SESSION["dataDump"]))
@@ -59,10 +59,11 @@ session_start();
     </nav>
 
     <div class="container">
-      <h2>Basketball Entry Form</h2>
       <!-- Main component for a primary marketing message or call to action -->
+			<div class="col-md-6 col-md-offset-3 description">
+      <h2 class="mainHeader">Current Stats</h2>
+      </div>
       <div class="jumbotron jumbo-small">
-        <p>Player Information</p>
         <table class="table table-hover custom-table">
           <thead>
             <tr>
@@ -78,7 +79,7 @@ session_start();
 		          	$fname = "fname$i";
 		          	$lname = "lname$i";
 		          	$time = "time$i";
-		            echo 
+		            echo
 		            "<tr>
 		              <td>$info[$fname]</td>
 		              <td>$info[$lname]</td>
@@ -90,6 +91,30 @@ session_start();
           </tbody>
         </table>
       </div>
+			<div class="col-md-12">
+				<div class="col-md-6">
+					<h1 class="mainHeader"> Average Time Played </h1>
+					<h2 class="mainHeader">
+						<?php
+						if(isset($_SESSION["Time Played"]))
+						{
+							echo $_SESSION["Time Played"] . " Minutes";
+						}
+						?>
+					</h2>
+				</div>
+				<div class="col-md-6">
+					<h1 class="mainHeader"> Standard Deviation </h1>
+					<h2 class="mainHeader">
+						<?php
+						if(isset($_SESSION["SD"]))
+						{
+							echo $_SESSION["SD"];
+						}
+						?>
+					</h2>
+				</div>
+			</div>
     </div> <!-- /container -->
 
 

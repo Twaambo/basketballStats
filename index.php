@@ -6,7 +6,7 @@ if(isset($_POST['submit'])){
   $totalTime = 0;
   $e = 0;
   $info = array();
-  
+
 
   for($i = 0; $i < 12; $i++)
   {
@@ -16,6 +16,13 @@ if(isset($_POST['submit'])){
       $info["lname$count"] = $_POST["lname$i"];
       $info["time$count"] = $_POST["time$i"];
       $totalTime += $_POST["time$i"];
+
+      if($_POST["time$i"] > 40)
+      {
+        $num = $i + 1;
+        $errors[$e] = "Player $num's time played exceeds 40 minutes limit";
+        $e++;
+      }
       $count++;
     }
     elseif(empty($_POST["fname$i"]) && empty($_POST["lname$i"]) && empty($_POST["time$i"]))
@@ -25,20 +32,21 @@ if(isset($_POST['submit'])){
     elseif(empty($_POST["fname$i"]) || empty($_POST["lname$i"]) || empty($_POST["time$i"]))
     {
       $num = $i + 1;
-      $errorOutput = "Player $num is missing information:";
-      
+      $errorOutput = "Player $num is missing information: ";
+
       if(empty($_POST["fname$i"]))
-        $errorOutput += "First Name ";
+        $errorOutput .= "[First Name] ";
       if(empty($_POST["lname$i"]))
-        $errorOutput += "Last Name ";
+        $errorOutput .= "[Last Name] ";
       if(empty($_POST["time$i"]))
-        $errorOutput += "Player Time ";
-        
+        $errorOutput .= "[Time Played] ";
+
+      //echo $errorOutput;
       $errors[$e] = $errorOutput;
       $e++;
     }
   }
-  
+
   //Check if time exceed 200 Minutes
   if($totalTime > 200)
   {
@@ -50,8 +58,20 @@ if(isset($_POST['submit'])){
   {
     //Calculate average time played
     $averageTime = $totalTime/$count;
-    
+
+    $sd = 0;
+
+    //Calculate the summation
+    for($i = 0; $i < $count; $i++)
+    {
+        $sd = $sd + pow(($info["time$i"]-$averageTime),2);
+    }
+    //Calcualte the SD
+    $sd = sqrt($sd / ($count));
+
   	session_start();
+    $_SESSION["Time Played"] = $averageTime;
+    $_SESSION["SD"] = round($sd,2);
   	$_SESSION["count"] = $count;
     $_SESSION["dataDump"] = $info;
     header("Location:times.php");
